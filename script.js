@@ -88,9 +88,85 @@ var upperCasedCharacters = [
   'Z'
 ];
 
+//Function to assign characterType options from input
+function getCharTypes() {
+
+  var types = {
+    LowerCase: false,
+    UpperCase: false,
+    Numeric: false,
+    Special: false,
+  }
+  //prompt user
+  var characterTypes = prompt("What character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )");
+  
+  //check an option has been selected
+  const chars = /[lL]|[uU]|[nN]|[sS]/g;
+  var found = characterTypes.match(chars);
+
+  while(found === null){
+    characterTypes = prompt("**Please select atleast 1 option** \nWhat character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )");
+    found = characterTypes.match(chars);
+  } 
+
+
+
+  //assign matches to true in types object if found, false if not
+  found = found.toString().toUpperCase();
+
+  if (found.includes('L')) {
+    types.LowerCase = true;
+  } else types.LowerCase = false;
+
+  if (found.includes('U')) {
+    types.UpperCase = true;
+  } else types.UpperCase = false;
+
+  if (found.includes('N')) {
+    types.Numeric = true;
+  } else types.Numeric = false;
+
+  if (found.includes('S')) {
+    types.Special = true;
+  } else types.Special = false;
+
+  //parse keys with true value and return them to check with user
+  var keys = Object.keys(types);
+  var filtered = keys.filter(function (key) {
+    return types[key]
+  }).toString().replace(/,/g, ' - ');
+  
+
+  //present keys to check if user is happy with selection
+  var confirmBox = confirm('Are these options correct ?\n\n' + filtered + '\n\nIf not please click cancel to try again');
+
+  //if not, go again
+  if (!confirmBox) {
+    types = getCharTypes();
+  } 
+
+  return types;
+}
+
 // Function to prompt user for password options
 function getPasswordOptions() {
 
+  var options = {
+    length: 0,
+    characterTypes: {}
+  }
+
+  //prompt user
+  var length = prompt("What length would you like your password? (between 10 and 64)");
+
+  //Check correct entry
+  while ((length < 10 || length > 64) || isNaN(length)) {
+    length = prompt("**Incorrect entry** \nPlease re-enter a number between 10 and 64 only")
+  }
+  options.length = length;
+  options.characterTypes = getCharTypes();
+
+  return options;
 }
 
 // Function for getting a random element from an array
@@ -100,7 +176,8 @@ function getRandom(arr) {
 
 // Function to generate password with user input
 function generatePassword() {
-
+  var options = getPasswordOptions();
+  console.log(options);
 }
 
 // Get references to the #generate element
