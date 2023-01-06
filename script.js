@@ -134,7 +134,7 @@
 
     //if incorrect entry re-prompt user
     while (found == null) {
-      characterTypes = prompt(pCharTypeError+pcharTypes); //promot again with error msg
+      characterTypes = prompt(pCharTypeError+pcharTypes); //prompt again with error msg
       //exit if cancel pressed
       if(characterTypes == null){
         return false;
@@ -142,16 +142,14 @@
       found = characterTypes.match(chars);
     }
 
-    //oush selected options to array
+    //push selected options to array
     found = found.toString().toUpperCase();
     found.includes('L') ? types.push('LowerCase') : '';
     found.includes('U') ? types.push('UpperCase') : '';
     found.includes('N') ? types.push('Numeric') : '';
     found.includes('S') ? types.push('Special') : '';
 
-
-    //Present options to user and ask for confirmtion that they are correct
-    var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2);
+    var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
 
     //if not, go again
     if (!confirmBox) {
