@@ -87,7 +87,11 @@ var upperCasedCharacters = [
   'Y',
   'Z'
 ];
-
+//length of character type arrays so as not to need to do it on each char
+const lowerCasedCharactersLength = lowerCasedCharacters.length;
+const upperCasedCharactersLength = upperCasedCharacters.length;
+const numericCharactersLength = numericCharacters.length;
+const specialCharactersLength = specialCharacters.length;
 //Function to assign characterType options from input
 function getCharTypes() {
 
@@ -100,6 +104,7 @@ function getCharTypes() {
   const chars = /[lL]|[uU]|[nN]|[sS]/g;
   var found = characterTypes.match(chars);
 
+  //if incorrect entry re-prompt user
   while (found == null) {
     characterTypes = prompt("**Please select atleast 1 option** \nWhat character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )");
     found = characterTypes.match(chars);
@@ -140,6 +145,7 @@ function getPasswordOptions() {
     length = prompt("**Incorrect entry** \nPlease re-enter a number between 10 and 64 only")
   }
   options.length = length;
+  //prompt user for character types
   options.characterTypes = getCharTypes();
 
   return options;
@@ -148,24 +154,21 @@ function getPasswordOptions() {
 // Function for getting a random element from an array
 function getRandom(arr) {
 
-
   if (arr == 'LowerCase') {
-    return lowerCasedCharacters[Math.floor(Math.random() * (lowerCasedCharacters.length - 1))];
+    return lowerCasedCharacters[Math.floor(Math.random() * (lowerCasedCharactersLength - 1))];
   }
   if (arr == 'UpperCase') {
-    return upperCasedCharacters[Math.floor(Math.random() * (upperCasedCharacters.length - 1))];
+    return upperCasedCharacters[Math.floor(Math.random() * (upperCasedCharactersLength - 1))];
   }
   if (arr == 'Numeric') {
-    return numericCharacters[Math.floor(Math.random() * (numericCharacters.length - 1))];
+    return numericCharacters[Math.floor(Math.random() * (numericCharactersLength - 1))];
   }
   if (arr == 'Special') {
-    return specialCharacters[Math.floor(Math.random() * (specialCharacters.length - 1))];
+    return specialCharacters[Math.floor(Math.random() * (specialCharactersLength - 1))];
   }
 
-
-
-
 }
+//function to shuffle array ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffle(array) {
   let currentIndex = array.length, randomIndex;
 
@@ -188,16 +191,18 @@ function shuffle(array) {
 function generatePassword() {
   var options = getPasswordOptions();
 
-  var optionsLength = options.characterTypes.length;
+  var charTypeLength = options.characterTypes.length;
+  var optionsLength = options.length
   //times to add each type of character type
-  var characterTimes = Math.floor(options.length / (optionsLength));
-  //any remaining times to add characters if not even
-  var remainingChar = options.length % (options.characterTypes.length);
+  var characterTimes = Math.floor(optionsLength / (charTypeLength));
+  //any remaining times to add characters if and left over from the above calc
+  var remainingChar = optionsLength % (options.characterTypes.length);
   var password = [];
   var i = 0
-  console.log(remainingChar);
+
   //get random character type based on user options and user chosen length
   var x = 0;
+
   options.characterTypes.forEach(function () {
     for (i = 0; i < characterTimes; i++) {
       var option = options.characterTypes[x]
@@ -209,7 +214,8 @@ function generatePassword() {
   //if the count of options divided by the length of the password has a remainer, add the extra characters here
   if (remainingChar > 0) {
     while (remainingChar > 0) {
-      var option = options.characterTypes[Math.floor(Math.random() * (optionsLength - 1))]
+      //for the remaining characters choose random type from user options
+      var option = options.characterTypes[Math.floor(Math.random() * (charTypeLength - 1))]
       password.push(getRandom(option));
       remainingChar --;
     }
