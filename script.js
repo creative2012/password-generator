@@ -195,16 +195,14 @@ function generatePassword() {
   var optionsLength = options.length
   //times to add each type of character type
   var characterTimes = Math.floor(optionsLength / (charTypeLength));
-  //any remaining times to add characters if and left over from the above calc
+  //any remaining times to add characters if any left over from the above calc
   var remainingChar = optionsLength % (options.characterTypes.length);
   var password = [];
-  var i = 0
 
   //get random character type based on user options and user chosen length
   var x = 0;
-
   options.characterTypes.forEach(function () {
-    for (i = 0; i < characterTimes; i++) {
+    for (var i = 0; i < characterTimes; i++) {
       var option = options.characterTypes[x]
       password.push(getRandom(option));
     }
@@ -220,7 +218,7 @@ function generatePassword() {
       remainingChar --;
     }
   }
-  console.log(password);
+
   // shuffle passowrd and return as string
   return shuffle(password).toString().replace(/,/g, '');
 
