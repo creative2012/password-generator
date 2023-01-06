@@ -94,9 +94,9 @@
   const specialCharactersLength = specialCharacters.length - 1;
   //prompts
   const pLength = "What length would you like your password? (between 10 and 64)";
-  const pLengthError = "**Incorrect entry** \nPlease re-enter a number between 10 and 64 only";
+  const pLengthError = "**Incorrect entry** \n";
   const pcharTypes = "What character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )";
-  const pCharTypeError = "**Please select atleast 1 option** \nWhat character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )";
+  const pCharTypeError = "**Please select atleast 1 option** \n";
   const pConfirm1 = 'Are these options correct ?\n\n';
   const pConfirm2 = '\n\nIf not please click cancel to select again';
 
@@ -134,7 +134,7 @@
 
     //if incorrect entry re-prompt user
     while (found == null) {
-      characterTypes = prompt(pCharTypeError); //promot again with error msg
+      characterTypes = prompt(pCharTypeError+pcharTypes); //promot again with error msg
       //exit if cancel pressed
       if(characterTypes == null){
         return false;
@@ -175,7 +175,7 @@
     }
     //Check correct entry
     while (length < 10 || length > 64  || isNaN(length)) {
-      length = +prompt(pLengthError) //prompt again with error msg
+      length = +prompt(pLengthError+pLength) //prompt again with error msg
       //exit if cancel pressed
       if(length == 0){
         return false;
