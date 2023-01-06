@@ -91,12 +91,7 @@ var upperCasedCharacters = [
 //Function to assign characterType options from input
 function getCharTypes() {
 
-  var types = {
-    LowerCase: false,
-    UpperCase: false,
-    Numeric: false,
-    Special: false,
-  }
+  var types = []
 
   //prompt user
   var characterTypes = prompt("What character types would you like in your password?\n Enter all required options into the box together from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )");
@@ -105,26 +100,21 @@ function getCharTypes() {
   const chars = /[lL]|[uU]|[nN]|[sS]/g;
   var found = characterTypes.match(chars);
 
-  while (found === null) {
+  while (found == null) {
     characterTypes = prompt("**Please select atleast 1 option** \nWhat character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )");
     found = characterTypes.match(chars);
   }
 
   //assign matches to true in types object if found, false if not
   found = found.toString().toUpperCase();
-  found.includes('L') ? types.LowerCase = true : types.LowerCase = false;
-  found.includes('U') ? types.UpperCase = true : types.UpperCase = false;
-  found.includes('N') ? types.Numeric = true : types.Numeric = false;
-  found.includes('S') ? types.Special = true : types.Special = false;
+  found.includes('L') ? types.push('LowerCase') : '';
+  found.includes('U') ? types.push('UpperCase')  : '';
+  found.includes('N') ? types.push('Numeric')  : '';
+  found.includes('S') ? types.push('Special')  : '';
 
-  //parse keys with true value only and return them to check with user
-  var keys = Object.keys(types);
-  var filtered = keys.filter(function (key) {
-    return types[key]
-  }).toString().replace(/,/g, ' - ');
 
   //present keys to check if user is happy with selection, just incase user spelt out entire word instead of just a letter and we detected other options by mistake
-  var confirmBox = confirm('Are these options correct ?\n\n' + filtered + '\n\nIf not please click cancel to select again');
+  var confirmBox = confirm('Are these options correct ?\n\n' + types.toString().replace(/,/g, ' - ') + '\n\nIf not please click cancel to select again');
 
   //if not, go again
   if (!confirmBox) {
@@ -139,7 +129,7 @@ function getPasswordOptions() {
 
   var options = {
     length: 0,
-    characterTypes: {}
+    characterTypes: []
   }
 
   //prompt user
@@ -163,7 +153,18 @@ function getRandom(arr) {
 // Function to generate password with user input
 function generatePassword() {
   var options = getPasswordOptions();
-  console.log(options);
+  var keys = Object.keys(options.characterTypes);
+    var tick = options.length;
+    while(tick > 0){
+        var randKey = keys[ keys.length * Math.random() << 0]
+
+        console.log(randKey);
+        tick --;
+      
+    }
+
+console.log(getRandomCharType);
+
 }
 
 // Get references to the #generate element
