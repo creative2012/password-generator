@@ -108,9 +108,9 @@ function getCharTypes() {
   //assign matches to true in types object if found, false if not
   found = found.toString().toUpperCase();
   found.includes('L') ? types.push('LowerCase') : '';
-  found.includes('U') ? types.push('UpperCase')  : '';
-  found.includes('N') ? types.push('Numeric')  : '';
-  found.includes('S') ? types.push('Special')  : '';
+  found.includes('U') ? types.push('UpperCase') : '';
+  found.includes('N') ? types.push('Numeric') : '';
+  found.includes('S') ? types.push('Special') : '';
 
 
   //present keys to check if user is happy with selection, just incase user spelt out entire word instead of just a letter and we detected other options by mistake
@@ -148,22 +148,75 @@ function getPasswordOptions() {
 // Function for getting a random element from an array
 function getRandom(arr) {
 
+
+  if (arr == 'LowerCase') {
+    return lowerCasedCharacters[Math.floor(Math.random() * (lowerCasedCharacters.length - 1))];
+  }
+  if (arr == 'UpperCase') {
+    return upperCasedCharacters[Math.floor(Math.random() * (upperCasedCharacters.length - 1))];
+  }
+  if (arr == 'Numeric') {
+    return numericCharacters[Math.floor(Math.random() * (numericCharacters.length - 1))];
+  }
+  if (arr == 'Special') {
+    return specialCharacters[Math.floor(Math.random() * (specialCharacters.length - 1))];
+  }
+
+
+
+
+}
+function shuffle(array) {
+  let currentIndex = array.length, randomIndex;
+
+  // While there remain elements to shuffle.
+  while (currentIndex != 0) {
+
+    // Pick a remaining element.
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex--;
+
+    // And swap it with the current element.
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex], array[currentIndex]];
+  }
+
+  return array;
 }
 
 // Function to generate password with user input
 function generatePassword() {
   var options = getPasswordOptions();
-  var keys = Object.keys(options.characterTypes);
-    var tick = options.length;
-    while(tick > 0){
-        var randKey = keys[ keys.length * Math.random() << 0]
 
-        console.log(randKey);
-        tick --;
-      
+  var optionsLength = options.characterTypes.length;
+  //times to add each type of character type
+  var characterTimes = Math.floor(options.length / (optionsLength));
+  //any remaining times to add characters if not even
+  var remainingChar = options.length % (options.characterTypes.length);
+  var password = [];
+  var i = 0
+  console.log(remainingChar);
+  //get random character type based on user options and user chosen length
+  var x = 0;
+  options.characterTypes.forEach(function () {
+    for (i = 0; i < characterTimes; i++) {
+      var option = options.characterTypes[x]
+      password.push(getRandom(option));
     }
+    x++;
+  });
 
-console.log(getRandomCharType);
+  //if the count of options divided by the length of the password has a remainer, add the extra characters here
+  if (remainingChar > 0) {
+    while (remainingChar > 0) {
+      var option = options.characterTypes[Math.floor(Math.random() * (optionsLength - 1))]
+      password.push(getRandom(option));
+      remainingChar --;
+    }
+  }
+  console.log(password);
+  // shuffle passowrd and return as string
+  return shuffle(password).toString().replace(/,/g, '');
 
 }
 
