@@ -95,10 +95,16 @@
   //prompts
   const pLength = "What length would you like your password? (between 10 and 64)";
   const pLengthError = "**Incorrect entry** \nPlease re-enter a number between 10 and 64 only";
-  const pcharTypes = "What length would you like your password? (between 10 and 64)";
+  const pcharTypes = "What character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )";
   const pCharTypeError = "**Please select atleast 1 option** \nWhat character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )";
   const pConfirm1 = 'Are these options correct ?\n\n';
   const pConfirm2 = '\n\nIf not please click cancel to select again';
+
+  function exit(x){
+    var test;
+    x == 0 ? test = true : test = false;
+    return test;
+  }
 
   //function to shuffle array ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   function shuffle(array) {
@@ -122,9 +128,12 @@
   //Function to assign characterType options from input
   function getCharTypes() {
 
-    var types = []
-    var characterTypes = prompt(pcharTypes); //prompt user for character types
-
+    var types = [] //ensure empty character type options to begin with
+    var characterTypes = prompt(pcharTypes); //prompt user for character type
+    //exit if cancel pressed
+    if(characterTypes == null){
+      return false;
+    }
     //check an option has been selected
     const chars = /[lL]|[uU]|[nN]|[sS]/g;
     var found = characterTypes.match(chars);
@@ -132,10 +141,14 @@
     //if incorrect entry re-prompt user
     while (found == null) {
       characterTypes = prompt(pCharTypeError); //promot again with error msg
+      //exit if cancel pressed
+      if(characterTypes == null){
+        return false;
+      }
       found = characterTypes.match(chars);
     }
 
-    //assign matches to true in types object if found, false if not
+    //oush selected options to array
     found = found.toString().toUpperCase();
     found.includes('L') ? types.push('LowerCase') : '';
     found.includes('U') ? types.push('UpperCase') : '';
@@ -143,7 +156,7 @@
     found.includes('S') ? types.push('Special') : '';
 
 
-    //present keys to check if user is happy with selection, just incase user spelt out entire word instead of just a letter and we detected other options by mistake
+    //Present options to user and ask for confirmtion that they are correct
     var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2);
 
     //if not, go again
@@ -161,15 +174,25 @@
       length: 0,
       characterTypes: []
     }
-
-    var length = prompt(pLength); //prompt user for length of password
+    var length = +prompt(pLength); //prompt user for length of password
+    //exit if cancel pressed
+    if(length == 0){
+      return false
+    }
     //Check correct entry
-    while (length < 10 || length > 64 || isNaN(length)) {
-      length = prompt(pLengthError) //prompt again with error msg
+    while (length < 10 || length > 64  || isNaN(length)) {
+      length = +prompt(pLengthError) //prompt again with error msg
+      //exit if cancel pressed
+      if(length == 0){
+        return false;
+      }
     }
 
     options.length = length; //set length
     options.characterTypes = getCharTypes(); // run function to prompt  user for character types and set
+    if(exit(options.characterTypes)){
+      return false;
+    }
 
     return options;
   }
@@ -193,45 +216,43 @@
   }
 
   // Function to generate password with user input
-  function generatePassword() {
-    var password = [];
-    var options = getPasswordOptions();
-
-    var charTypeLength = options.characterTypes.length;  //length of character options selected (used 3 times)
-    var passwordLength = options.length //length password needs to be (used twice)
+  function generatePassword(opt) {
+    var password = []; //ensure empty password to beign with
+    var charTypeLength = opt.characterTypes.length;  //length of character options selected (used 3 times)
+    var passwordLength = opt.length //length password needs to be (used twice)
     var characterTimes = Math.floor(passwordLength / (charTypeLength)); //times to add each type of character type based on user chosen length and number of options
     var remainingChar = passwordLength % (charTypeLength); //remaining times to add characters if any left over from the above calc
-    var character = ''; // variable to hold each randon character for the password
 
     //get random characters for each user option character type, ensuring all options selected will be present in password
-    options.characterTypes.forEach(function (x) {
+    opt.characterTypes.forEach(function (x) {
       for (var i = 0; i < characterTimes; i++) {
-        character = x;
-        password.push(getRandomChar(character));
+        password.push(getRandomChar(x)); //push random char to password array
       }
-
     });
 
     //if the count of options divided by the length of the password has a remainer, add the extra characters here
     if (remainingChar > 0) {
       while (remainingChar > 0) {
-        character = options.characterTypes[getRandomNum(charTypeLength - 1)]; //for the remaining characters choose random type from user options
-        password.push(getRandomChar(character));
+        var character = opt.characterTypes[getRandomNum(charTypeLength - 1)]; //for the remaining characters choose random type from user options
+        password.push(getRandomChar(character)); //push random char to password array
         remainingChar--;
       }
     }
 
-    return shuffle(password).toString().replace(/,/g, ''); // shuffle passowrd and return as string
+    return shuffle(password).toString().replace(/,/g, ''); // shuffle password and return as clean string
   }
 
   var generateBtn = document.querySelector('#generate'); // Get references to the #generate element
 
   // Write password to the #password input
   function writePassword() {
-    var password = generatePassword();
-    var passwordText = document.querySelector('#password');
+    var userOptions = getPasswordOptions()
+    if(userOptions != false){
+      var password = generatePassword(userOptions);
+      var passwordText = document.querySelector('#password');
 
-    passwordText.value = password;
+      passwordText.value = password;
+    }
   }
 
   // Add event listener to generate button
