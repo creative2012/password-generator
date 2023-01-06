@@ -194,7 +194,7 @@ function generatePassword() {
 
   var charTypeLength = options.characterTypes.length;
   var optionsLength = options.length
-  //times to add each type of character type
+  //times to add each type of character type based on user chosen length and number of options
   var characterTimes = Math.floor(optionsLength / (charTypeLength));
   //remaining times to add characters if any left over from the above calc
   var remainingChar = optionsLength % (options.characterTypes.length);
