@@ -100,12 +100,6 @@
   const pConfirm1 = 'Are these options correct ?\n\n';
   const pConfirm2 = '\n\nIf not please click cancel to select again';
 
-  function exit(x){
-    var test;
-    x == 0 ? test = true : test = false;
-    return test;
-  }
-
   //function to shuffle array ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
   function shuffle(array) {
     let currentIndex = array.length, randomIndex;
@@ -190,7 +184,7 @@
 
     options.length = length; //set length
     options.characterTypes = getCharTypes(); // run function to prompt  user for character types and set
-    if(exit(options.characterTypes)){
+    if(options.characterTypes == false){
       return false;
     }
 
