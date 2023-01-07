@@ -41,43 +41,6 @@ function combineArrays(array, exp , type){
   return type;
 }
 
-//Function to assign characterType options from input
-function getCharTypes() {
-  var types = [] //ensure empty character type options to begin with
-  var characterTypes = prompt(pcharTypes); //prompt user for character type
-  //exit if cancel pressed
-  if (characterTypes == null) {
-    return false;
-  }
-  //check an option has been selected
-  var found = characterTypes.match(chars);
-
-  //if incorrect entry re-prompt user
-  while (found == null) {
-    characterTypes = prompt(pCharTypeError + pcharTypes); //prompt again with error msg
-    //exit if cancel pressed
-    if (characterTypes == null) {
-      return false;
-    }
-    found = characterTypes.match(chars);
-  }
-
-  //push selected options to array
-  found = found.toString().toUpperCase();
-  found.includes('L') ? types.push(combineArrays(lowerCasedCharacters, regExpLCase, 'LowerCase')) : '';
-  found.includes('U') ? types.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
-  found.includes('N') ? types.push(combineArrays(numericCharacters, regExpNCase,'Numeric')) : '';
-  found.includes('S') ? types.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
-  var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
-
-  //if not, go again
-  if (!confirmBox) {
-    types = getCharTypes();
-  }
-  newArrayLength =newCharacterArray.length;
-  return types;
-}
-
 // Function to prompt user for password options
 function getPasswordOptions() {
   var options = {
@@ -99,10 +62,38 @@ function getPasswordOptions() {
   }
 
   options.length = length; //set length
-  options.characterTypes = getCharTypes(); // run function to prompt  user for character types and set
-  if (options.characterTypes == false) {
+  
+  var characterTypes = prompt(pcharTypes); //prompt user for character type
+  //exit if cancel pressed
+  if (characterTypes == null) {
     return false;
   }
+  //check an option has been selected
+  var found = characterTypes.match(chars);
+
+  //if incorrect entry re-prompt user
+  while (found == null) {
+    characterTypes = prompt(pCharTypeError + pcharTypes); //prompt again with error msg
+    //exit if cancel pressed
+    if (characterTypes == null) {
+      return false;
+    }
+    found = characterTypes.match(chars);
+  }
+
+  //push selected options to array
+  found = found.toString().toUpperCase();
+  found.includes('L') ? options.characterTypes.push(combineArrays(lowerCasedCharacters, regExpLCase, 'LowerCase')) : '';
+  found.includes('U') ? options.characterTypes.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
+  found.includes('N') ? options.characterTypes.push(combineArrays(numericCharacters, regExpNCase,'Numeric')) : '';
+  found.includes('S') ? options.characterTypes.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
+  var confirmBox = confirm(pConfirm1 + 'Password Length: '+options.length+ '\n'+options.characterTypes.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
+
+  //if not, go again
+  if (!confirmBox) {
+    options = getPasswordOptions();
+  }
+  newArrayLength = newCharacterArray.length;
   return options;
 }
 
