@@ -27,6 +27,7 @@ const regExpLCase = "(?=.*[a-z])";
 const regExpUCase = "(?=.*[A-Z])";
 const regExpNCase = "(?=.*\\d)";
 const regExpSCase = "(?=.*[-+_!@#$%^&*., ?])";
+const chars = /[lL]|[uU]|[nN]|[sS]/g;
 var RegExpChar = "";
 
 //function to reset variables for new password
@@ -55,7 +56,6 @@ function getCharTypes() {
     return false;
   }
   //check an option has been selected
-  const chars = /[lL]|[uU]|[nN]|[sS]/g;
   var found = characterTypes.match(chars);
 
   //if incorrect entry re-prompt user
