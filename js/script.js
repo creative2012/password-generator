@@ -42,6 +42,7 @@ function combineArrays(array, exp, type) {
 
 // Function to prompt user for password options
 function getPasswordOptions() {
+  int();
   var options = {
     length: 0,
     characterTypes: []
@@ -129,7 +130,6 @@ var generateBtn = document.querySelector('#generate'); // Get references to the 
 
 // Write password to the #password input
 function writePassword() {
-  int();
   var userOptions = getPasswordOptions()
   if (userOptions != false) {
     var password = generatePassword(userOptions.length);
