@@ -99,14 +99,9 @@ function getPasswordOptions() {
     return options;
 }
 
-//function to get random Number
-function getRandomNum(max) {
-  return Math.floor(Math.random() * max)
-}
-
 // Function for getting a random element from an array
 function getRandomChar() {
-  var char = newCharacterArray[getRandomNum(newArrayLength)];
+  var char = newCharacterArray[Math.floor(Math.random() * newArrayLength)];
   return char;
 }
 
