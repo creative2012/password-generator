@@ -14,7 +14,7 @@ var newCharacterArray = [];
 var newArrayLength = 0;
 //prompts
 const pLength = "What length would you like your password? (between 10 and 64)";
-const pLengthError = "**Incorrect entry** \n";
+const pLengthError = "**Incorrect entry** \n Entry must be numeric and between 10 and 64";
 const pcharTypes = "What character types would you like in your password?\n Enter all required into the box from the options below\n ( L = lowercase, U = uppercase, N = numeric, S = special characters )";
 const pCharTypeError = "**Please select atleast 1 option** \n";
 const pConfirm1 = 'Are these options correct ?\n\n';
@@ -47,38 +47,38 @@ function getPasswordOptions() {
     length: 0,
     characterTypes: []
   }
-  var length = +prompt(pLength); //prompt user for length of password
-  //exit if cancel pressed
-  if (length == 0) {
-    return false
-  }
-  //Check correct entry
-  while (length < 10 || length > 64 || isNaN(length)) {
-    length = +prompt(pLengthError + pLength) //prompt again with error msg
-    //exit if cancel pressed
-    if (length == 0) {
-      return false;
+  var length = 0;
+  var exit = false;
+  while(true){
+    length = prompt(pLength);
+    if(length == null){
+      exit = true;
+      break;
+    } 
+    else if(length < 10 || length > 64 || isNaN(length)){
+      alert(pLengthError);
+    } else {
+      break;
     }
   }
-
   options.length = length; //set length
-  
-  var characterTypes = prompt(pcharTypes); //prompt user for character type
-  //exit if cancel pressed
-  if (characterTypes == null) {
-    return false;
-  }
-  //check an option has been selected
-  var found = characterTypes.match(chars);
-
-  //if incorrect entry re-prompt user
-  while (found == null) {
-    characterTypes = prompt(pCharTypeError + pcharTypes); //prompt again with error msg
-    //exit if cancel pressed
-    if (characterTypes == null) {
-      return false;
+  var characterTypes 
+  var found
+  while(true && !exit){
+    characterTypes = prompt(pcharTypes); 
+    if(characterTypes == null){
+      exit = true;
+      break;
     }
     found = characterTypes.match(chars);
+    if(found == null){
+      alert(pCharTypeError);
+    } else {
+      break;
+    }
+  }
+  if(exit){
+    return false;
   }
 
   //push selected options to array
