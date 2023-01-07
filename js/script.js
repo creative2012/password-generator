@@ -96,7 +96,7 @@ function getPasswordOptions() {
   } else {
     return false;
   }
-    return options;
+  return options;
 }
 
 // Function for getting a random element from an array
@@ -125,7 +125,7 @@ var generateBtn = document.querySelector('#generate'); // Get references to the 
 
 // Write password to the #password input
 function writePassword() {
-  var userOptions = getPasswordOptions()
+  var userOptions = getPasswordOptions();
   if (userOptions != false) {
     var password = generatePassword(userOptions.length);
     var passwordText = document.querySelector('#password');
