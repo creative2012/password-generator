@@ -21,25 +21,11 @@
   const pCharTypeError = "**Please select atleast 1 option** \n";
   const pConfirm1 = 'Are these options correct ?\n\n';
   const pConfirm2 = '\n\nIf not please click cancel to select again';
-
-  //function to shuffle array ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
-  function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-
-    // While there remain elements to shuffle.
-    while (currentIndex != 0) {
-
-      // Pick a remaining element.
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-
-      // And swap it with the current element.
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex], array[currentIndex]];
-    }
-
-    return array;
-  }
+  const regExpLCase = "(?=.*[a-z])";
+  const regExpUCase = "(?=.*[A-Z])";
+  const regExpNCase = "(?=.*\\d)";
+  const regExpSCase = "(?=.*[-+_!@#$%^&*.,?])";
+  var RegExpChar = "";
 
   //Function to assign characterType options from input
   function getCharTypes() {
@@ -66,11 +52,22 @@
 
     //push selected options to array
     found = found.toString().toUpperCase();
-    found.includes('L') ? types.push('LowerCase') : '';
-    found.includes('U') ? types.push('UpperCase') : '';
-    found.includes('N') ? types.push('Numeric') : '';
-    found.includes('S') ? types.push('Special') : '';
-
+    if(found.includes('L')){
+      types.push('LowerCase');
+      RegExpChar += regExpLCase;
+    } 
+    if(found.includes('U')){
+      types.push('UpperCase');
+      RegExpChar += regExpUCase;
+    }
+    if(found.includes('N')){
+      types.push('Numeric');
+      RegExpChar += regExpNCase;
+    }
+    if(found.includes('S')){
+      types.push('Special');
+      RegExpChar += regExpSCase;
+    }
     var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
 
     //if not, go again
@@ -131,29 +128,38 @@
 
   // Function to generate password with user input
   function generatePassword(opt) {
-    var password = []; //ensure empty password to beign with
-    var charTypeLength = opt.characterTypes.length;  //length of character options selected (used 3 times)
-    var passwordLength = opt.length //length password needs to be (used twice)
-    var characterTimes = Math.floor(passwordLength / (charTypeLength)); //times to add each type of character type based on user chosen length and number of options
-    var remainingChar = passwordLength % (charTypeLength); //remaining times to add characters if any left over from the above calc
+
+    var password = '';
+    var charTypeLength = opt.characterTypes.length;
+    var passLength = opt.length;
+    var test = false;
+
+    while (!test){
+      for( var i = 0; i < passLength; i++){
+        var character = opt.characterTypes[getRandomNum(charTypeLength)];
+        password = password + getRandomChar(character);
+      }
+      if(password.length == passLength && isValid(password)){
+        test = true;
+      } else {
+        password = '';
+      } 
+        
+    } 
+
+
+      return password;
     
-    //get random characters for each user option character type, ensuring all options selected will be present in password
-    opt.characterTypes.forEach(function (x) {
-      for (var i = 0; i < characterTimes; i++) {
-        password.push(getRandomChar(x)); //push random char to password array
-      }
-    });
+  }
+  //function to validate all char types in passowrd
+  function isValid(str) {
 
-    //if the count of options divided by the length of the password has a remainer, add the extra characters here
-    if (remainingChar > 0) {
-      while (remainingChar > 0) {
-        var character = opt.characterTypes[getRandomNum(charTypeLength - 1)]; //for the remaining characters choose random type from user options
-        password.push(getRandomChar(character)); //push random char to password array
-        remainingChar--;
-      }
-    }
+    var result;
+    var pattern = new RegExp("^"+RegExpChar+".+$");
+    pattern.test(str) ? result = true : result =false;
 
-    return shuffle(password).toString().replace(/,/g, ''); // shuffle password and return as clean string
+    return result;
+    
   }
 
   var generateBtn = document.querySelector('#generate'); // Get references to the #generate element
