@@ -6,7 +6,7 @@ This app will generate a password based on your criteria.
 
 ## Usage
 
-You will be presented with prompts to choose password length and charater types that you want included in the password. At least one character type needs to be selected.
+You will be presented with prompts to choose password length and character types that you want included in the password. At least one character type needs to be selected.
 ``` 
 Length of password:
 
