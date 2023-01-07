@@ -27,7 +27,7 @@ const chars = /[lL]|[uU]|[nN]|[sS]/g;
 var RegExpChar = "";
 
 //function to reset variables for new password
-function int(){
+function int() {
   newCharacterArray = [];
   newArrayLength = 0;
   RegExpChar = "";
@@ -35,7 +35,7 @@ function int(){
 }
 
 //function to combine arrays and set password test
-function combineArrays(array, exp , type){
+function combineArrays(array, exp, type) {
   newCharacterArray = newCharacterArray.concat(array);
   RegExpChar += exp;
   return type;
@@ -47,47 +47,47 @@ function getPasswordOptions() {
     length: 0,
     characterTypes: []
   }
+  var characterTypes;
+  var found;
   var length = 0;
   var exit = false;
-  while(true){
+  while (true) {
     length = prompt(pLength);
-    if(length == null){
+    if (length == null) {
       exit = true;
       break;
-    } 
-    else if(length < 10 || length > 64 || isNaN(length)){
+    }
+    else if (length < 10 || length > 64 || isNaN(length)) {
       alert(pLengthError);
     } else {
       break;
     }
   }
   options.length = length; //set length
-  var characterTypes 
-  var found
-  while(true && !exit){
-    characterTypes = prompt(pcharTypes); 
-    if(characterTypes == null){
+  while (true && !exit) {
+    characterTypes = prompt(pcharTypes);
+    if (characterTypes == null) {
       exit = true;
       break;
     }
     found = characterTypes.match(chars);
-    if(found == null){
+    if (found == null) {
       alert(pCharTypeError);
     } else {
       break;
     }
   }
-  if(exit){
+  if (exit) {
     return false;
   }
 
-  //push selected options to array
+  //push selected options to array and confirm all options
   found = found.toString().toUpperCase();
   found.includes('L') ? options.characterTypes.push(combineArrays(lowerCasedCharacters, regExpLCase, 'LowerCase')) : '';
   found.includes('U') ? options.characterTypes.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
-  found.includes('N') ? options.characterTypes.push(combineArrays(numericCharacters, regExpNCase,'Numeric')) : '';
+  found.includes('N') ? options.characterTypes.push(combineArrays(numericCharacters, regExpNCase, 'Numeric')) : '';
   found.includes('S') ? options.characterTypes.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
-  var confirmBox = confirm(pConfirm1 + 'Password Length: '+options.length+ '\n'+options.characterTypes.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
+  var confirmBox = confirm(pConfirm1 + 'Password Length: ' + options.length + '\n' + options.characterTypes.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
 
   //if not, go again
   if (!confirmBox) {
