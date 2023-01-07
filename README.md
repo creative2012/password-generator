@@ -15,7 +15,7 @@
 The following image shows the web application's appearance and functionality:
 
 
-![My Page](images/download.png)
+![Click The generate Password button and follow the prompts](images/app.png)
 
 > **Note**: This layout is responsive and will display correctly on PC as well as mobile
 * Link to live site:
