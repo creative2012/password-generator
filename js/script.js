@@ -51,6 +51,7 @@ function getPasswordOptions() {
   var found;
   var length = 0;
   var exit = false;
+  //prompt for length and validate
   while (true) {
     length = prompt(pLength);
     if (length == null) {
@@ -64,6 +65,7 @@ function getPasswordOptions() {
     }
   }
   options.length = length; //set length
+  //prompt for characters and validate
   while (true && !exit) {
     characterTypes = prompt(pcharTypes);
     if (characterTypes == null) {
@@ -77,24 +79,24 @@ function getPasswordOptions() {
       break;
     }
   }
-  if (exit) {
+  if (!exit) {
+    //push selected options to array and confirm all options
+    found = found.toString().toUpperCase();
+    found.includes('L') ? options.characterTypes.push(combineArrays(lowerCasedCharacters, regExpLCase, 'LowerCase')) : '';
+    found.includes('U') ? options.characterTypes.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
+    found.includes('N') ? options.characterTypes.push(combineArrays(numericCharacters, regExpNCase, 'Numeric')) : '';
+    found.includes('S') ? options.characterTypes.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
+    var confirmBox = confirm(pConfirm1 + 'Password Length: ' + options.length + '\n' + options.characterTypes.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
+
+    //if not, go again
+    if (!confirmBox) {
+      options = getPasswordOptions();
+    }
+    newArrayLength = newCharacterArray.length;
+  } else {
     return false;
   }
-
-  //push selected options to array and confirm all options
-  found = found.toString().toUpperCase();
-  found.includes('L') ? options.characterTypes.push(combineArrays(lowerCasedCharacters, regExpLCase, 'LowerCase')) : '';
-  found.includes('U') ? options.characterTypes.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
-  found.includes('N') ? options.characterTypes.push(combineArrays(numericCharacters, regExpNCase, 'Numeric')) : '';
-  found.includes('S') ? options.characterTypes.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
-  var confirmBox = confirm(pConfirm1 + 'Password Length: ' + options.length + '\n' + options.characterTypes.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
-
-  //if not, go again
-  if (!confirmBox) {
-    options = getPasswordOptions();
-  }
-  newArrayLength = newCharacterArray.length;
-  return options;
+    return options;
 }
 
 //function to get random Number
