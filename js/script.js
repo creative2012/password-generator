@@ -24,12 +24,13 @@
   const regExpLCase = "(?=.*[a-z])";
   const regExpUCase = "(?=.*[A-Z])";
   const regExpNCase = "(?=.*\\d)";
-  const regExpSCase = "(?=.*[-+_!@#$%^&*.,?])";
+  const regExpSCase = "(?=.*[-+_!@#$%^&*., ?])";
   var RegExpChar = "";
 
   //Function to assign characterType options from input
   function getCharTypes() {
-
+    
+    RegExpChar = "";
     var types = [] //ensure empty character type options to begin with
     var characterTypes = prompt(pcharTypes); //prompt user for character type
     //exit if cancel pressed
