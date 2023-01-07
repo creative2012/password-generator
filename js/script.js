@@ -9,13 +9,9 @@ var lowerCasedCharacters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k
 
 // Array of uppercase characters to be included in password
 var upperCasedCharacters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-
+//new array to hold selected character types
 var newCharacterArray = [];
 var newArrayLength = 0;
-//length of character type arrays (used every character call)
-const charactersLength = lowerCasedCharacters.length - 1; //length of upper and lower are the same, no need to count both
-const numericCharactersLength = numericCharacters.length - 1;
-const specialCharactersLength = specialCharacters.length - 1;
 //prompts
 const pLength = "What length would you like your password? (between 10 and 64)";
 const pLengthError = "**Incorrect entry** \n";
@@ -41,9 +37,7 @@ function int(){
 //function to combine arrays and set password test
 function combineArrays(array, exp , type){
   newCharacterArray = newCharacterArray.concat(array);
-  newArrayLength += array.length;
   RegExpChar += exp;
-
   return type;
 }
 
@@ -74,14 +68,13 @@ function getCharTypes() {
   found.includes('U') ? types.push(combineArrays(upperCasedCharacters, regExpUCase, 'UpperCase')) : '';
   found.includes('N') ? types.push(combineArrays(numericCharacters, regExpNCase,'Numeric')) : '';
   found.includes('S') ? types.push(combineArrays(specialCharacters, regExpSCase, 'Special')) : '';
-
   var confirmBox = confirm(pConfirm1 + types.toString().replace(/,/g, ' - ') + pConfirm2); //Present options to user and ask for confirmtion that they are correct
 
   //if not, go again
   if (!confirmBox) {
     types = getCharTypes();
   }
-
+  newArrayLength =newCharacterArray.length;
   return types;
 }
 
@@ -110,9 +103,9 @@ function getPasswordOptions() {
   if (options.characterTypes == false) {
     return false;
   }
-
   return options;
 }
+
 //function to get random Number
 function getRandomNum(max) {
   return Math.floor(Math.random() * max)
@@ -122,28 +115,22 @@ function getRandomNum(max) {
 function getRandomChar() {
   var char = newCharacterArray[getRandomNum(newArrayLength)];
   return char;
-
 }
 
 // Function to generate password from user input
 function generatePassword(passLength) {
   var password = '';
-
   for (var i = 0; i < passLength; i++) {
     password += getRandomChar();
   }
   isValid(password) ? '' : password = generatePassword(passLength);
-
   return password;
 
 }
 //function to validate all char types in passowrd
 function isValid(str) {
   var pattern = new RegExp("^" + RegExpChar + ".+$");
-  pattern.test(str)
-
   return pattern.test(str)
-
 }
 
 var generateBtn = document.querySelector('#generate'); // Get references to the #generate element
