@@ -31,7 +31,6 @@ function int() {
   newCharacterArray = [];
   newArrayLength = 0;
   RegExpChar = "";
-
 }
 
 //function to combine arrays and set password test
@@ -123,7 +122,7 @@ function generatePassword(passLength) {
 //function to validate all char types in passowrd
 function isValid(str) {
   var pattern = new RegExp("^" + RegExpChar + ".+$");
-  return pattern.test(str)
+  return pattern.test(str);
 }
 
 var generateBtn = document.querySelector('#generate'); // Get references to the #generate element
