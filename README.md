@@ -1,18 +1,13 @@
 # password-generator
 ## Description
 This app will generate a password based on your criteria.
-* Link to live site: https://creative2012.github.io/password-generator/
 
-## Table of Contents 
-
-- [Usage](#usage)
-- [Credits](#credits)
-- [License](#license)
+ - [Link to Live Site](https://creative2012.github.io/password-generator/)
 
 ## Usage
 
 You will be presented with prompts to choose password length and charater types that you want included in the password. At least one character type needs to be selected.
-
+``` 
 Length of password:
 
 - At least 10 characters but no more than 64.
@@ -27,7 +22,7 @@ Character types:
 
 - Special characters ($@%&*, etc.)
 
-
+```
 The following image shows the web application's appearance and functionality:
 
 
